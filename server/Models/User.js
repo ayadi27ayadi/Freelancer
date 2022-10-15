@@ -16,15 +16,10 @@ lastName:{
         max: 20,
         unique: true,
     },
-  email: {
-    type: String,
-    
-  },
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
   phoneNumber: {
-    type: String,
-    
-  },
-  password: { type: String, },
+    type: String,required: true},
   freelancerUser: { type: Boolean,default: false },
   verified: {type: Boolean, default: false, },
 },
