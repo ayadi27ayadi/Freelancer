@@ -46,6 +46,12 @@
          res.send(finisheddata);
                    
              },
+
+    getCategories  : async(req,res)=>{
+        let finisheddata = await postservices.getCategories();
+        res.send(finisheddata);
+               
+                }
 }
 
 export default postcontroller

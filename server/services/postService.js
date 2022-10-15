@@ -74,6 +74,30 @@ addPost: async (postdata) =>{
       }
   },
 
-    
+  getCategories : async (postdata) => {
+    console.log(postdata)
+      const posts = await Post.find().distinct("categories");
+      return posts;
+
+  },
+
+  getCategoriesPost:  async (req, res) => {
+      const posts = await  Post.find( {
+        categories : req.body.search
+      })
+      res.send({ posts });
+    },
+   
+    search:  async (req,resp)=>{
+      let data = await Post.find(
+          {
+              "$or":[
+                  {competence:{$regex:req.params.key.toLowerCase()}},
+                  {categories:{$regex:req.params.key}}
+              ]
+          }
+      )
+      resp.send(data);
+    }
 }
 export default postservices;

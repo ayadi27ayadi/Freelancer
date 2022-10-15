@@ -23,4 +23,12 @@ router.delete("/deleteonepost/:id", postcontroller.deleteOnePost);
   /* Delete All Post */
 router.delete("/", postcontroller.deleteAllPost);
 
+/* Get Categorie */
+
+
+router.get("/categorie",postcontroller.getCategories);
+ /* Get Categorie Par post */
+router.get("/getcategoriespost",postservices.getCategoriesPost);
+/* search */
+router.get("/search/:key",postservices.search);
 export default router;
