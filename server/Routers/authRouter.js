@@ -107,6 +107,8 @@ router.post("/resetpassword", async (req, res) => {
       res.status(500).json(error)
     });
 });
+router.get("/:id", usersservices.getUserById);
+
 
 
 export default router;
