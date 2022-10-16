@@ -25,23 +25,34 @@ export const usersservices={
     // Hash the password before saving into database.
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(user.password, salt);
-    await user.save();
-
+    const createdUser = await user.save();
+    res.send({
+      _id: createdUser._id,
+      firstName: createdUser.firstName,
+      lastName: createdUser.lastName,
+      email: createdUser.email,
+      phoneNumber:createdUser.phoneNumber,
+      freelancerUser: createdUser.freelancerUser,
+      token: generateToken(createdUser),
+    });
     // Generating the token for user verification
-    const token = new Token({ userId: user._id, token: crypto.randomBytes(16).toString('hex') });
+    const veriftoken=crypto.randomBytes(16).toString('hex');
+    const token = new Token({ userId: user._id, veriftoken });
     await token.save();
-    console.log('$token')
+   
+    console.log(token)
 
     // Send varification email
-    const link = `${process.env.BASE_URL}/users/confirm/${token.token}`;
-    await sendEmail(user.email, "Email Verification\n", link);
-    console.log(token)
+    const redicectUrl="http://localhost:3000/users/confirm";
+    await sendEmail(user.email,redicectUrl,veriftoken);
+    console.log(veriftoken)
     res.status(200).send({
         message: "Email Verification link sent to your email",
     });
   },
   /*géneration de token de verification*/
   verifeteuser:async (req, res) => {
+    
     try {
       const token = await Token.findOne({
         token: req.params.token,
@@ -74,6 +85,7 @@ export const usersservices={
             firstName: user.firstName,
             lastName: user.lastName,
             email:user.email,
+            password:user.password,
             freelancerUser:user.freelancerUser,
             verified:user.verified,
             token:generateToken(user),
@@ -86,6 +98,20 @@ export const usersservices={
       return;
     }
     res.status(401).send({message:'invalid user or password'});
+  },
+  getUserById: async(req, res) => {
+    const id = req.params.id;
+  
+    User.findById(id)
+      .then(data => {
+        if (!data)
+          res.status(404);
+        else res.send(data);
+      })
+      .catch(err => {
+        res
+          .status(500);
+      });
   },
 
 
