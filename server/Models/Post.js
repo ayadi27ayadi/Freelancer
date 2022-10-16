@@ -7,7 +7,7 @@ const postSchema = new mongoose.Schema({
     desc: {type: String, max: 500,},
     competence: {type: String, max: 500,},
     categories: {type: String, max: 500, },
-    evaluation: {type: Number,mai: 0, max:10},
+    evaluation: {type: Number, max:10},
 },
 {
     timestamps: true,
